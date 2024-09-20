@@ -1,24 +1,59 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import * as util from 'util';
+
 type Presentation = {
-    name: string;
+    title: string;
     slides: Slide[];
 }
 
 type Slide = {
     id: string;
+    elements: Array<textField | imageField>;
     backgroundColor: string;
-    elements: Array<textField | imageField>
 }
 
 type SelectSlide = {
     slideId: string;
     elementId: string;
 }
+type textField = {
+    id: string;
+    text: string;
+    fontSize: number;
+    fontFamily: string;
+    position: { x: number; y: number };
+    size: { width: number; height: number };
+}
 
-const changePresentationName = (presentation: Presentation, newPresentationName: string): Presentation => {
+type imageField = {
+    id: string
+    url: string;
+    position: { x: number; y: number };
+    size: { width: number; height: number };
+}
+
+// type positionElement = {
+//     position: { x: number; y: number };
+//     size: { width: number; height: number };
+// }
+
+// type textField = positionElement&{
+//     id: string;
+//     text: string;
+//     fontSize: number;
+//     fontFamily: string;
+// }
+
+// type imageField = positionElement&{
+//     id: string
+//     Url: string;
+// }
+
+
+const changePresentationTitle = (presentation: Presentation, newPresentationTitle: string): Presentation => {
     return {
         ...presentation,
-        name: newPresentationName
+        title: newPresentationTitle
     }
 }
 
@@ -35,33 +70,13 @@ const removeSlide = (presentation: Presentation, slideId: string): Presentation 
     }
 }
 
-const moveSlide = (presentation: Presentation, fromId: number, toId: number): Presentation => {
+const moveSlide = (presentation: Presentation, fromIndex: number, toIndex: number): Presentation => {
     const slides = [...presentation.slides];
-    const [thisSlide] = slides.splice(fromId, 1);
-    slides.splice(toId, 0, thisSlide);
-    return {
-        ...presentation,
-        slides
-    }
+    const [thisSlide] = slides.splice(fromIndex, 1);
+    slides.splice(toIndex, 0, thisSlide);
+    return {...presentation, slides}
 }
-
-type textField = {
-    id: string;
-    text: string;
-    textSize: number;
-    textFamily: string;
-    position: { x: number; y: number };
-    size: { width: number; height: number };
-}
-
-type imageField = {
-    id: string
-    Url: string;
-    position: { x: number; y: number };
-    size: { width: number; height: number };
-}
-
-
+//Изменение элемента
 const addElement = (slide: Slide, newElement: textField | imageField) : Slide => {
     return {
         ...slide, 
@@ -76,14 +91,24 @@ const removeElement = (slide: Slide, elmentId: string): Slide => {
     }
 }
 
-
-const changeBackFont = (slide: Slide, newBackColor: string): Slide => {
+const moveElement = (slide: Slide, elementId: string, x: number, y: number): Slide =>  {
     return {
         ...slide,
-        backgroundColor: newBackColor
-    }
+        elements: slide.elements.map(el =>
+        el.id === elementId ? { ...el, position: { x, y } } : el
+        )
+    };
 }
 
+const resizeElement = (slide: Slide, elementId: string, width: number, height: number) : Slide => {
+    return {
+        ...slide,
+        elements: slide.elements.map(el => 
+            el.id === elementId ? {...el, size: {width, height}} : el
+        )
+    };
+}
+//Изменение текста
 const changeText = (slide: Slide, elementId: string, newText: string): Slide => {
     return {    
         ...slide,
@@ -92,48 +117,127 @@ const changeText = (slide: Slide, elementId: string, newText: string): Slide => 
             ? {...el, text: newText} 
             : el
         )
-    }
+    };
 }
 
-const changeTextSize = (slide: Slide, elementId: string, newTextSize: number) => {
+const changeTextSize = (slide: Slide, elementId: string, newFontSize: number) => {
     return {
         ...slide, 
         elements: slide.elements.map(
             el => el.id === elementId 
-            ? {...el, textSize: newTextSize} 
+            ? {...el, fontSize: newFontSize} 
             : el
         )
-    }
+    };
 }
 
-const changeTextFamily = (slide: Slide, elementId: string, newTextFamily: string): Slide => {
+const changeTextFontFamily = (slide: Slide, elementId: string, newFontFamily: string): Slide => {
     return {
         ...slide, 
         elements: slide.elements.map(
             el => el.id === elementId
-            ? {...el, textFamily: newTextFamily}
+            ? {...el, fontFamily: newFontFamily}
             : el
         )
-    }
+    };
 }
-
-const changeCoordinates = (slide: Slide, elementId: string, newPosition: {newX: number, newY: number}) => { 
+//Слайд
+const changeSlideBackground = (slide: Slide, newBackColor: string): Slide => {
     return {
         ...slide,
-        elements: slide.elements.map(
-            el => el.id === elementId 
-            ? {...el, position: newPosition}
-            : el
-        )
+        backgroundColor: newBackColor
     }
 }
 
-// var mass = ['ads', '213', '123', '12111']
-// console.log(mass.splice(2,1))
-// var edit = mass.splice(2,0, '00')
-// console.log(mass);
 
+// Минимум данныхх
 
-// const mass1 = [1, 2, 3, 4]
-// const mass2 = [...mass1, 5, 6]
-// console.log(mass2)
+const minPresentation: Presentation = {
+    title: "",
+    slides: []
+}
+const minSlide: Slide = {
+    id: "slide1",
+    backgroundColor: "",
+    elements: []
+}
+
+const maxPresentation : Presentation = {
+    title: "Presentation",
+    slides: [
+        {
+            id: "1",
+            backgroundColor: "#000",
+            elements: [
+                {
+                    id: "text1",
+                    text: "Text",
+                    position: { x: 10, y: 10 },
+                    size: { width: 10, height: 10 },
+                    fontSize: 10,
+                    fontFamily: "Times New roman"
+                },
+                {
+                    id: "image1",
+                    url: "URL",
+                    position: { x: 10, y: 10 },
+                    size: { width: 10, height: 10 },
+                }
+            ]
+        },
+        {
+            id: "2",
+            backgroundColor: "#FFFF",
+            elements: [
+                {
+                    id: "text2",
+                    text: "Text",
+                    position: { x: 10, y: 10 },
+                    size: { width: 10, height: 10 },
+                    fontSize: 10,
+                    fontFamily: "Arial"
+                },
+                {
+                    id: "image2",
+                    url: "URL",
+                    position: { x: 10, y: 10 },
+                    size: { width: 10, height: 10 },
+                }
+            ]
+        }
+    ]
+}
+
+const maxSlide : Slide = maxPresentation.slides[0]
+
+const printFunc = (func: Slide | Presentation) => {
+    console.log(util.inspect(func, { depth: null, colors: true , breakLength: 50, showHidden: true}));
+    console.log("__________________________________________")
+  }
+//Тест всех функций 
+//Min data
+console.log('min data*****');
+printFunc(minPresentation);
+printFunc(minSlide);
+printFunc(changePresentationTitle(minPresentation, "new min title"));
+printFunc(addSlide(minPresentation, minSlide));
+printFunc(removeSlide(minPresentation, "slide1"));
+printFunc(moveElement(minSlide, "text1", 100, 100));
+printFunc(resizeElement(minSlide, "text1", 100, 100));
+printFunc(changeText(minSlide, "text1", "new min text"));
+printFunc(changeTextSize(minSlide, "text1", 14));
+printFunc(changeTextFontFamily(minSlide, "text1", "new font family"));
+printFunc(changeSlideBackground(minSlide, "#FFFFFF"));
+//max data
+console.log('max data*****');
+printFunc(maxPresentation);
+printFunc(maxSlide);
+printFunc(changePresentationTitle(maxPresentation, "new max title"));
+printFunc(addSlide(maxPresentation, maxSlide));
+printFunc(removeSlide(maxPresentation, "1"));
+printFunc(moveElement(maxSlide, "text1", 100, 100));
+printFunc(resizeElement(maxSlide, "text1", 100, 100));
+printFunc(changeText(maxSlide, "text1", "new max text"));
+printFunc(changeTextSize(maxSlide, "text1", 20));
+printFunc(changeTextFontFamily(maxSlide, "text1", "text font"));
+printFunc(changeSlideBackground(maxSlide, "#FFFFFF"));
