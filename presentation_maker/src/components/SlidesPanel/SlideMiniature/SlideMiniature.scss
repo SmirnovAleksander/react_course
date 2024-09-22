@@ -1,0 +1,43 @@
+@import "../../variables";
+
+.slide-miniature-wrapper {
+  display: flex;
+}
+
+.slide-miniature {
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: $border-radius;
+  border: 2px solid #D9D9D9;
+
+  &:hover {
+    border: 2px solid #C7C7C7;
+  }
+
+
+  &__image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  &__placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; // Заполняем контейнер
+    height: 100%; // Заполняем контейнер
+    color: #999;
+    text-align: center;
+  }
+
+  &__number {
+    text-align: center;
+    margin: 10px;
+  }
+}

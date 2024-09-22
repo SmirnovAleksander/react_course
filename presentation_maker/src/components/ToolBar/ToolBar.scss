@@ -1,0 +1,12 @@
+@import "../variables";
+
+.tool-bar {
+  height: 20%;
+  min-height: 150px;
+  //height: 200px;
+  background-color: #007bff;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: $border-radius;
+}
