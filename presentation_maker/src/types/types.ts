@@ -20,6 +20,7 @@ export type textField = {
     fontFamily: string;
     position: { x: number; y: number };
     size: { width: number; height: number };
+    color: string;
 }
 
 export type imageField = {

@@ -3,7 +3,7 @@ import "./ToolBar.scss";
 
 
 type ToolBarProps = {
-    addNewSlide?: () => void;
+    addNewSlide: () => void;
 };
 
 const ToolBar: React.FC<ToolBarProps> = ({addNewSlide}) => {

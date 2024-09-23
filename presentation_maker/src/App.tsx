@@ -8,25 +8,7 @@ import {useState} from "react";
 
 const App:React.FC = () => {
 
-    // const [presentation, setPresentation] = useState<Presentation>({
-    //     title: 'My Presentation',
-    //     slides: [],
-    // });
-    // const addNewSlide = () => {
-    //     const newSlide: Slide = {
-    //         id: String(presentation.slides.length + 1),
-    //         elements: [],
-    //         backgroundColor: '#fff',
-    //     };
-    //     setPresentation({
-    //         ...presentation,
-    //         slides: [...presentation.slides, newSlide],
-    //     });
-    // };
-
-    const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null);
-
-    const maxPresentation : Presentation = {
+    const [presentation, setPresentation] = useState<Presentation>({
         title: "Presentation",
         slides: [
             {
@@ -39,7 +21,8 @@ const App:React.FC = () => {
                         position: { x: 100, y: 100 },
                         size: { width: 200, height: 30 },
                         fontSize: 30,
-                        fontFamily: "Times New roman"
+                        fontFamily: "Times New roman",
+                        color: "white",
                     },
                     {
                         id: "image1",
@@ -50,21 +33,22 @@ const App:React.FC = () => {
                 ]
             },
             {
-                id: "1",
+                id: "2",
                 backgroundColor: "#fff",
                 elements: []
             },
             {
-                id: "2",
+                id: "3",
                 backgroundColor: "#232",
                 elements: [
                     {
                         id: "text2",
-                        text: "Text",
-                        position: { x: 10, y: 10 },
-                        size: { width: 10, height: 10 },
-                        fontSize: 10,
-                        fontFamily: "Arial"
+                        text: "Text free 2",
+                        position: { x: 100, y: 100 },
+                        size: { width: 200, height: 30 },
+                        fontSize: 30,
+                        fontFamily: "Arial",
+                        color: "white",
                     },
                     {
                         id: "image2",
@@ -75,14 +59,36 @@ const App:React.FC = () => {
                 ]
             }
         ]
-    }
+    });
+
+    const addNewSlide = () => {
+        const newSlide: Slide = {
+            id: String(presentation.slides.length + 1),
+            elements: [],
+            backgroundColor: '#fff',  // Белый фон для нового слайда
+        };
+
+        // Обновляем презентацию и выводим её в консоль
+        setPresentation((prevPresentation) => {
+            const updatedPresentation = {
+                ...prevPresentation,
+                slides: [...prevPresentation.slides, newSlide],
+            };
+
+            // Выводим обновленный объект презентации в консоль
+            console.log('Updated Presentation:', updatedPresentation);
+            return updatedPresentation;
+        });
+    };
+
+    const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null);
 
     return (
         <div className="app">
-            <ToolBar/>
+            <ToolBar addNewSlide={addNewSlide}/>
             <div className="content">
-                <SlidesPanel slides={maxPresentation.slides} onSlideSelect={setSelectedSlide}/>
-                <SlideEditor slide={selectedSlide || maxPresentation.slides[0]}/>
+                <SlidesPanel slides={presentation.slides} onSlideSelect={setSelectedSlide}/>
+                <SlideEditor slide={selectedSlide || presentation.slides[0]}/>
             </div>
         </div>
     );
