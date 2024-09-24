@@ -4,7 +4,7 @@ export type Presentation = {
 }
 
 export type Slide = {
-    id: string;
+    id: number;
     elements: Array<textField | imageField>;
     backgroundColor: string;
 }
@@ -14,7 +14,7 @@ export type SelectSlide = {
     elementId: string;
 }
 export type textField = {
-    id: string;
+    id: number;
     text: string;
     fontSize: number;
     fontFamily: string;
@@ -24,7 +24,7 @@ export type textField = {
 }
 
 export type imageField = {
-    id: string
+    id: number;
     url: string;
     position: { x: number; y: number };
     size: { width: number; height: number };

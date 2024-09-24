@@ -6,9 +6,10 @@ import SlideMiniature from "./SlideMiniature/SlideMiniature.tsx";
 interface SlidesPanelProps {
     slides: Slide[];
     onSlideSelect: (slide: Slide) => void;
+    selectedSlideId: number | null;
 }
 
-const SlidesPanel: React.FC<SlidesPanelProps> = ({slides, onSlideSelect}) => {
+const SlidesPanel: React.FC<SlidesPanelProps> = ({slides, onSlideSelect, selectedSlideId}) => {
     return (
         <div className='slides-panel'>
             {slides.map( (slide, index) => (
@@ -17,6 +18,7 @@ const SlidesPanel: React.FC<SlidesPanelProps> = ({slides, onSlideSelect}) => {
                     slideNumber={index + 1}
                     slideColor={`${slide.backgroundColor}`}
                     onClick={() => onSlideSelect(slide)}
+                    isSelected={slide.id === selectedSlideId}
                 />
             ))}
         </div>

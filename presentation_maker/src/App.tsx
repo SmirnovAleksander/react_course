@@ -12,20 +12,20 @@ const App:React.FC = () => {
         title: "Presentation",
         slides: [
             {
-                id: "1",
+                id: 1,
                 backgroundColor: "#B9982B",
                 elements: [
                     {
-                        id: "text1",
+                        id: 1,
                         text: "Text free",
                         position: { x: 100, y: 100 },
                         size: { width: 200, height: 30 },
                         fontSize: 30,
-                        fontFamily: "Times New roman",
+                        fontFamily: "Times New Roman",
                         color: "white",
                     },
                     {
-                        id: "image1",
+                        id: 2,
                         url: "URL",
                         position: { x: 200, y: 200 },
                         size: { width: 200, height: 200 },
@@ -33,16 +33,16 @@ const App:React.FC = () => {
                 ]
             },
             {
-                id: "2",
+                id: 2,
                 backgroundColor: "#fff",
                 elements: []
             },
             {
-                id: "3",
+                id: 3,
                 backgroundColor: "#232",
                 elements: [
                     {
-                        id: "text2",
+                        id: 3,
                         text: "Text free 2",
                         position: { x: 100, y: 100 },
                         size: { width: 200, height: 30 },
@@ -51,7 +51,7 @@ const App:React.FC = () => {
                         color: "white",
                     },
                     {
-                        id: "image2",
+                        id: 4,
                         url: "URL",
                         position: { x: 10, y: 10 },
                         size: { width: 10, height: 10 },
@@ -61,33 +61,41 @@ const App:React.FC = () => {
         ]
     });
 
+
     const addNewSlide = () => {
         const newSlide: Slide = {
-            id: String(presentation.slides.length + 1),
+            id: presentation.slides.length + 1,
             elements: [],
-            backgroundColor: '#fff',  // Белый фон для нового слайда
+            backgroundColor: '#fff',
         };
 
-        // Обновляем презентацию и выводим её в консоль
         setPresentation((prevPresentation) => {
             const updatedPresentation = {
                 ...prevPresentation,
                 slides: [...prevPresentation.slides, newSlide],
             };
 
-            // Выводим обновленный объект презентации в консоль
+            setSelectedSlide(newSlide);
+            setSelectedSlideId(newSlide.id);
+
             console.log('Updated Presentation:', updatedPresentation);
             return updatedPresentation;
         });
     };
 
-    const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null);
+    const [selectedSlide, setSelectedSlide] = useState<Slide | null>(null); //для слайд редактора
+    const [selectedSlideId, setSelectedSlideId] = useState<number | null>(null); //для слайд панели(слева)
+
+    const handleSlideSelect = (slide: Slide) => {
+        setSelectedSlideId(slide.id);
+        setSelectedSlide(slide);
+    };
 
     return (
         <div className="app">
             <ToolBar addNewSlide={addNewSlide}/>
             <div className="content">
-                <SlidesPanel slides={presentation.slides} onSlideSelect={setSelectedSlide}/>
+                <SlidesPanel selectedSlideId={selectedSlideId} slides={presentation.slides} onSlideSelect={handleSlideSelect}/>
                 <SlideEditor slide={selectedSlide || presentation.slides[0]}/>
             </div>
         </div>
