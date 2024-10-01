@@ -1,6 +1,6 @@
 @import "../variables";
 
-.slide-editor-placeholder {
+.slideEditorPlaceholder {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,7 +11,7 @@
   font-family: sans-serif;
 }
 
-.slide-editor-wrapper {
+.slideEditorWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +23,7 @@
   border-radius: $border-radius 0 0 0 ;
 }
 
-.slide-editor {
+.slideEditor {
   width: 60vw;
   height: calc(60vw * 9 / 16);
   max-width: 1280px;

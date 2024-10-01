@@ -1,5 +1,6 @@
 import * as React from "react";
-import "./SlideMiniature.scss";
+import "./SlideMiniature.module.scss";
+import classes from './SlideMiniature.module.scss'
 
 interface SlideMiniatureProps {
     slideNumber: number;
@@ -9,12 +10,12 @@ interface SlideMiniatureProps {
     isSelected?: boolean;
 }
 
-const SlideMiniature: React.FC<SlideMiniatureProps> = ({slideNumber, imageUrl, slideColor, onClick, isSelected}) => {
+const SlideMiniature: React.FC<SlideMiniatureProps> = ({slideNumber, imageUrl, slideColor, onClick}) => {
     return (
-        <div className='slide-miniature-wrapper'>
-            <p className='slide-miniature__number'>{slideNumber}</p>
+        <div className={classes.slideMiniatureWrapper}>
+            <p className={classes.slideMiniatureNumber}>{slideNumber}</p>
             <div
-                className={`slide-miniature ${isSelected ? 'selected' : ''}`}
+                className={classes.slideMiniature}
                 onClick={onClick}
                 style={{
                     backgroundColor: imageUrl ? 'transparent' : `${slideColor}`,
@@ -24,9 +25,9 @@ const SlideMiniature: React.FC<SlideMiniatureProps> = ({slideNumber, imageUrl, s
                     <img
                         src={imageUrl}
                         alt='Слайд'
-                        className='slide-miniature__image'
+                        className={classes.slideMiniatureImage}
                     />
-                ) : (<div className='slide-miniature__placeholder'>Слайд</div>)
+                ) : (<div className={classes.slideMiniaturePlaceholder}>Слайд</div>)
                 }
             </div>
         </div>

@@ -1,19 +1,20 @@
 import {Slide} from "../../types/types.ts";
 import * as React from "react";
-import './SlideEditor.scss'
+import './SlideEditor.module.scss'
 import {useState} from "react";
+import classes from './SlideEditor.module.scss'
+
 
 interface SlideEditorProps {
     slide: Slide | undefined;
 }
 
 const SlideEditor: React.FC<SlideEditorProps> = ({ slide }) => {
-    if (!slide) return <div className="slide-editor-placeholder">Выберите слайд</div>;
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [hoveredElementId, setHoveredElementId] = useState<number | null>(null); // Состояние для хранения ID наведенного элемента
+    if (!slide) return <div className={classes.slideEditorPlaceholder}>Выберите слайд</div>;
     return (
-        <div className="slide-editor-wrapper">
-            <div className="slide-editor" style={{ backgroundColor: slide.backgroundColor}}>
+        <div className={classes.slideEditorWrapper}>
+            <div className={classes.slideEditor} style={{ backgroundColor: slide.backgroundColor}}>
                 {slide.elements.map((el) => (
                     <div
                         key={el.id}
